@@ -210,3 +210,56 @@
 /obj/item/organ/external/head/set_dna(datum/dna/new_dna)
 	..()
 	new_dna.write_head_attributes(src)
+
+/obj/item/organ/external/tail
+	limb_name = "tail"
+	name = "tail"
+	force_icon = "icons/effects/species.dmi"
+	icon_name = "tail"
+	max_damage = 30
+	min_broken_damage = 15
+	w_class = WEIGHT_CLASS_SMALL
+	body_part = TAIL
+	parent_organ = "groin"
+	amputation_point = "lower spine"
+	var/datum/body_accessory/body_accessory
+	var/list/m_styles = list("tail" = "None")
+	var/list/m_colours = list("tail" = "#000000")
+
+/obj/item/organ/external/tail/New(var/mob/living/carbon/holder)
+	..()
+	var/mob/living/carbon/human/H = holder
+	if(!H)
+		var/icon/tempicon = new/icon("icon" = force_icon, "icon_state" = icon_name)
+		var/icon/tempicon2 = new/icon(tempicon,dir=NORTH)
+		tempicon2.Flip(SOUTH)
+		tempicon.Insert(tempicon2,dir=SOUTH)
+		force_icon = tempicon
+		icon_name = null
+		return
+
+/obj/item/organ/external/tail/sync_colour_to_human(var/mob/living/carbon/human/H)
+	..()
+	H.sync_tail()
+
+/obj/item/organ/external/tail/monkey
+	species_type = /datum/species/monkey
+	name = "monkey tail"
+	icon_name = "chimptail_s"
+	max_damage = 15
+	min_broken_damage = 10
+
+/obj/item/organ/external/tail/monkey/tajaran
+	species_type = /datum/species/monkey/tajaran
+	name = "farwa tail"
+	icon_name = "farwatail_s"
+
+/obj/item/organ/external/tail/monkey/vulpkanin
+	species_type = /datum/species/monkey/vulpkanin
+	name = "wolpin tail"
+	icon_name = "wolpintail_s"
+
+/obj/item/organ/external/tail/monkey/unathi
+	species_type = /datum/species/monkey/unathi
+	name = "stok tail"
+	icon_name = "stoktail_s"

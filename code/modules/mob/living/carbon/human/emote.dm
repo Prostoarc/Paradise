@@ -286,12 +286,22 @@
 			m_type = 2
 
 		if("wag", "wags")
-			if(body_accessory)
-				if(body_accessory.try_restrictions(src))
+			if(!(dna.species.bodyflags & HAS_TAIL))
+				return
+			else if(!bodyparts_by_name["tail"] && dna.species.bodyflags & HAS_TAIL)
+				message = "<B>[src]</B> пытается махать хвостом КОТОРОГО НЕТ!!!"
+
+			else if(bodyparts_by_name["tail"].status & ORGAN_BROKEN || bodyparts_by_name["tail"].status & ORGAN_DEAD)
+				if(bodyparts_by_name["tail"].status & ORGAN_BROKEN)
+					bodyparts_by_name["tail"].receive_damage(1)
+				message = "<B>[src]</B> пытается махать хвостом..."
+
+			else if(bodyparts_by_name["tail"].body_accessory)
+				if(bodyparts_by_name["tail"].body_accessory.try_restrictions(src))
 					message = "<B>[src]</B> начинает махать хвостом."
 					start_tail_wagging()
 
-			else if(dna.species.bodyflags & TAIL_WAGGING)
+			else if(bodyparts_by_name["tail"].dna.species.bodyflags & TAIL_WAGGING)
 				if(!wear_suit || !(wear_suit.flags_inv & HIDETAIL))
 					message = "<B>[src]</B> начинает махать хвостом."
 					start_tail_wagging()
@@ -302,7 +312,11 @@
 			m_type = 1
 
 		if("swag", "swags")
-			if(dna.species.bodyflags & TAIL_WAGGING || body_accessory)
+			if(!(dna.species.bodyflags & HAS_TAIL))
+				return
+			else if(!bodyparts_by_name["tail"] && dna.species.bodyflags & HAS_TAIL)
+				message = "<B>[src]</B> пытается махать хвостом КОТОРОГО НЕТ!!!"
+			else if(bodyparts_by_name["tail"].dna.species.bodyflags & TAIL_WAGGING || body_accessory)
 				message = "<B>[src]</B> прекращает махать хвостом."
 				stop_tail_wagging()
 			else
